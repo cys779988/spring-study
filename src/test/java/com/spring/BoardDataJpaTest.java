@@ -59,11 +59,11 @@ public class BoardDataJpaTest {
 	}
 	
 	@Test
+	@Disabled
 	public void addTest() {
 		List<CourseDto> contentsList = new ArrayList<>();
-		for (int i = 0; i < 1; i++) {
+		for (int i = 0; i < 3; i++) {
 			CourseDto dto =  CourseDto.builder()
-					.id(Long.parseLong("2133"+i))
 					.courseDiv("테스트")
 					.name("테스트"+i)
 					.type("Y")
@@ -82,6 +82,13 @@ public class BoardDataJpaTest {
 	}
 	
 	@Test
+	public void getCount() {
+		Long count = courseRepository.count();
+		assertThat(count, is(8L));
+	}
+	
+	@Test
+	@Disabled
 	public void getTest() {
 		List<CourseEntity> entity = courseRepository.findAll();
 		assertThat(entity.size(), is(6));

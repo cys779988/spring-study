@@ -2,11 +2,17 @@ package com.spring.board.service;
 
 import lombok.AllArgsConstructor;
 
+import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.spring.board.model.CourseDto;
 import com.spring.board.model.CourseEntity;
 import com.spring.board.repository.CourseRepository;
+import com.spring.board.repository.CourseRepositorySupport;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
@@ -17,12 +23,14 @@ import java.util.Optional;
 @Service
 public class CourseService {
     private CourseRepository courseRepository;
-    
+    private CourseRepositorySupport courseRepositorySupport;
     @Transactional
-    public List<CourseDto> getCourseList() {
-    	List<CourseEntity> courseEntities = courseRepository.findAll();
+    public List<CourseDto> getCourseList(Integer pageNum, Integer perPage) {
+    	Page<CourseEntity> page = courseRepository.findAll(PageRequest.of(pageNum-1, perPage, Sort.by(Direction.ASC, "id")));
+        List<CourseEntity> courseEntities = page.getContent();
         List<CourseDto> courseDtoList = new ArrayList<>();
         int rowKey = 0;
+
         for ( CourseEntity courseEntity : courseEntities) {
         	courseDtoList.add(this.convertEntityToDto(courseEntity, rowKey++));
         }
@@ -34,7 +42,6 @@ public class CourseService {
     public CourseDto getPost(Long id) {
         Optional<CourseEntity> entityWrapper = courseRepository.findById(id);
         CourseEntity courseEntity = entityWrapper.get();
-
         CourseDto courseDto = CourseDto.builder()
                 .courseDiv(courseEntity.getCourseDiv())
                 .name(courseEntity.getName())
@@ -46,13 +53,16 @@ public class CourseService {
                 .col4(courseEntity.getCol4())
                 .col5(courseEntity.getCol5())
                 .build();
+       //BeanUtils.copyProperties(courseEntity, courseDto);
 
         return courseDto;
     }
 
     @Transactional
-    public Long add(CourseDto courseDto) {
-        return courseRepository.save(courseDto.toEntity()).getId();
+    public void add(List<CourseDto> courseDto) {
+    	courseDto.stream().forEach(dto -> {
+    		courseRepository.save(dto.toEntity()).getId();
+    	});
     }
 
     @Transactional
@@ -60,8 +70,14 @@ public class CourseService {
     	courseRepository.deleteById(id);
     }
     
+    @Transactional
+    public Long getCourseCount() {
+        return courseRepository.count();
+    }
+    
     private CourseDto convertEntityToDto(CourseEntity courseEntity, int rowKey) {
         return CourseDto.builder()
+        		.id(courseEntity.getId())
                 .courseDiv(courseEntity.getCourseDiv())
                 .name(courseEntity.getName())
                 .type(courseEntity.getType())

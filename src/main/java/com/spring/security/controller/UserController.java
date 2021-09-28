@@ -14,9 +14,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.common.config.LoginUser;
-import com.spring.security.config.SessionUser;
-import com.spring.security.config.UserInformation;
+import com.spring.security.model.SessionUser;
 import com.spring.security.model.UserDto;
+import com.spring.security.model.UserInformation;
 import com.spring.security.service.UserService;
 
 import lombok.AllArgsConstructor;
@@ -30,7 +30,11 @@ public class UserController implements HttpSessionListener{
 
 	@GetMapping("/")
 	public String index(Model model, @LoginUser SessionUser user) {
-		return "/index";
+		
+		if(user != null) {
+			model.addAttribute("userName", user.getName());
+		}
+		return "/board/list";
 	}
 
 	@ResponseBody

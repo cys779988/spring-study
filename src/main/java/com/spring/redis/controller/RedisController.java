@@ -1,3 +1,4 @@
+/*
 package com.spring.redis.controller;
 
 import org.springframework.data.redis.core.RedisTemplate;
@@ -37,3 +38,4 @@ public class RedisController {
 		return ResponseEntity.ok(vop.get(key));
 	}
 }
+*/

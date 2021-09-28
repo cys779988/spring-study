@@ -7,11 +7,14 @@
 
 <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
-<!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.4.0/css/ui.jqgrid-bootstrap-ui.min.css" integrity="sha512-G7dtwBhVfBZwXaN5Z+AvU9LLcTp6vNXO1rpGh0zLz+ARigIay4FGAulk8OEhRKbxXXiLfuBAJczcCvFtmdL1Kg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jqgrid/5.4.0/css/ui.jqgrid-bootstrap.min.css" integrity="sha512-HCcnuzTn52TrDhR4H2B16MqQzZHIxcLkbK9AILndt7Xze/1dVNZnH4NCWpzb4BrN+VjO9639gSU4BKXh+eH3jA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
- -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tui-grid/4.17.0/tui-grid.css" integrity="sha512-fmbhEy+nVsZj/tywb2BI9dTVaAeriir9yFmGpbTLETEKN7ie09PpR0dSIqv/TaQyClCizGwxVaXxOJTnXam/vg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tui-grid/4.17.0/tui-grid.js" integrity="sha512-HNyYgSg75wwopyvmiEmIVhfu32hxZyN5rdwJ5MDZ0d0eTrSRYbt/NpYqpWPpvlapu2ylQA3ElRQ52Vq3IYzOSg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+<script type="text/javascript" src="https://uicdn.toast.com/tui.code-snippet/v1.5.0/tui-code-snippet.js"></script>
+
+<link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.css" />
+<script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
+
+<script src="https://uicdn.toast.com/grid/v4.17.0/tui-grid.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/v4.17.0/tui-grid.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -89,16 +92,22 @@
 
 	class TextEditor {
 	    constructor(props) {
-	      const el = document.createElement('input');
-	      const { maxLength } = props.columnInfo.editor.options;
+	    const el = document.createElement('input');
+	    const { maxLength } = props.columnInfo.editor.options;
 
-	      el.type = 'text';
-	      el.maxLength = maxLength;
-	      el.value = String(props.value);
+	    el.type = 'text';
+	    el.maxLength = maxLength;
+	    el.value = String(props.value);
 
-	      this.el = el;
+		el.addEventListener('focusout', e => {
+			var gridData = grid.getRow(props.rowKey);
+			gridData.col4 = e.target.value;
+			grid.dataManager.push('UPDATE', gridData);
+		})
+		
+	    this.el = el;
 	    }
-
+	    
 	    getElement() {
 	      return this.el;
 	    }
@@ -112,20 +121,168 @@
 	    }
 	}
 	
-    class RowNumberRenderer {
-      constructor(props) {
-        const el = document.createElement('span');
-        el.innerHTML = props.rowKey;
-        this.el = el;
-      }
+	class YnEditor {
+	    constructor(props) {
+	    var gridData = grid.getRow(props.rowKey);
+	    var el = document.createElement('select');
+	    var options = ["Y", "N"];
+	    options.forEach(val => {
+			var option = document.createElement("option");
+	    	option.text = val;
+	    	option.value = val;
+		    if(gridData.type==val) {
+		    	option.selected = 1;
+		    }  
+		    el.add(option, null);
+	    })
+	    
+		el.addEventListener('focusout', e => {
+			var gridData = grid.getRow(props.rowKey);
+			gridData.type = e.target.value;
+			grid.dataManager.push('UPDATE', gridData);
+		})
+		
+	    this.el = el;
+	    }
+	    
+	    getElement() {
+	      return this.el;
+	    }
 
-      getElement() {
-        return this.el;
-      }
+	    getValue() {
+	      return this.el.value;
+	    }
 
-      render(props) {
-        this.el.innerHTML = props.rowKey;
-      }
+	    mounted() {
+	      this.el.select();
+	    }
+	}
+	
+	class Col1SelectEditor {
+	    constructor(props) {
+	    var gridData = grid.getRow(props.rowKey);
+	    var el = document.createElement('select');
+	    var options = ["기본역량", "전문역량", "기본소양", "역량/전문"];
+	    options.forEach(val => {
+			var option = document.createElement("option");
+	    	option.text = val;
+	    	option.value = val;
+		    if(gridData.col1==val) {
+		    	option.selected = 1;
+		    }  
+		    el.add(option, null);
+	    })
+	    
+		el.addEventListener('focusout', e => {
+			var gridData = grid.getRow(props.rowKey);
+			gridData.col1 = e.target.value;
+			grid.dataManager.push('UPDATE', gridData);
+		})
+		
+	    this.el = el;
+	    }
+	    
+	    getElement() {
+	      return this.el;
+	    }
+
+	    getValue() {
+	      return this.el.value;
+	    }
+
+	    mounted() {
+	      this.el.select();
+	    }
+	}
+	
+	class Col2SelectEditor {
+	    constructor(props) {
+	    var gridData = grid.getRow(props.rowKey);
+	    var el = document.createElement('select');
+	    var options = ["일반과목", "선택과목", "분반", "분임활동"];
+	    options.forEach(val => {
+			var option = document.createElement("option");
+	    	option.text = val;
+	    	option.value = val;
+		    if(gridData.col2==val) {
+		    	option.selected = 1;
+		    }  
+		    el.add(option, null);
+	    })
+	    
+		el.addEventListener('focusout', e => {
+			var gridData = grid.getRow(props.rowKey);
+			gridData.col2 = e.target.value;
+			grid.dataManager.push('UPDATE', gridData);
+		})
+		
+	    this.el = el;
+	    }
+	    
+	    getElement() {
+	      return this.el;
+	    }
+
+	    getValue() {
+	      return this.el.value;
+	    }
+
+	    mounted() {
+	      this.el.select();
+	    }
+	}
+	
+	class Col3SelectEditor {
+	    constructor(props) {
+	    var gridData = grid.getRow(props.rowKey);
+	    var el = document.createElement('select');
+	    var options = ["집합교육", "원격교육"];
+	    options.forEach(val => {
+			var option = document.createElement("option");
+	    	option.text = val;
+	    	option.value = val;
+		    if(gridData.col3==val) {
+		    	option.selected = 1;
+		    }  
+		    el.add(option, null);
+	    })
+	    
+		el.addEventListener('focusout', e => {
+			var gridData = grid.getRow(props.rowKey);
+			gridData.col3 = e.target.value;
+			grid.dataManager.push('UPDATE', gridData);
+		})
+		
+	    this.el = el;
+	    }
+	    
+	    getElement() {
+	      return this.el;
+	    }
+
+	    getValue() {
+	      return this.el.value;
+	    }
+
+	    mounted() {
+	      this.el.select();
+	    }
+	}
+
+	class RowNumberRenderer {
+		constructor(props) {
+	        const el = document.createElement('span');
+	        el.innerHTML = props.rowKey;
+	        this.el = el;
+		}
+
+		getElement() {
+			return this.el;
+		}
+
+		render(props) {
+			this.el.innerHTML = props.rowKey;
+		}
     }
 
     class CheckboxRenderer {
@@ -139,21 +296,9 @@
         const hiddenInput = document.createElement('input');
         hiddenInput.className = 'hidden-input';
         hiddenInput.id = String(rowKey);
-
-        const customInput = document.createElement('span');
-        customInput.className = 'custom-input';
+        hiddenInput.type = 'checkbox';
 
         label.appendChild(hiddenInput);
-        label.appendChild(customInput);
-
-        hiddenInput.type = 'checkbox';
-        hiddenInput.addEventListener('change', function() {
-          if (hiddenInput.checked) {
-            grid.check(rowKey);
-          } else {
-            grid.uncheck(rowKey);
-          }
-        });
 
         this.el = label;
       }
@@ -163,7 +308,7 @@
       }
 	
       render(props) {
-        const hiddenInput = this.el.querySelector('.hidden-input');
+		const hiddenInput = this.el.querySelector('.hidden-input');
         const checked = Boolean(props.value);
 
         hiddenInput.checked = checked;
@@ -179,54 +324,61 @@
 		button.setAttribute('for', String(rowKey));
 		button.value = '추가';
 		button.addEventListener('click', function() {
-			popUp(grid.getRow(rowKey).id, '테스트팝업');
+			
+			
 		});
 
-		const label = document.createElement('label');
-		label.appendChild(button);
-		lecturer.forEach( (val) => {
-			const span1 = document.createElement('span');
-			span1.innerHTML= '[주]';
-			const radiobox1 = document.createElement('input');
-			radiobox1.type = 'radio';
-			radiobox1.id = 'lecturer-input-y';
-			radiobox1.name = rowKey + '-' + val.id;
-			radiobox1.setAttribute('for', val.id);
-			radiobox1.value= 'Y';
-			
-			const span2 = document.createElement('span');
-			span2.innerHTML= '[보]';
-			const radiobox2 = document.createElement('input');
-			radiobox2.type = 'radio';
-			radiobox2.id = 'lecturer-input-n';
-			radiobox2.name = rowKey + '-' + val.id;
-			radiobox2.setAttribute('for', val.id);
-			radiobox2.value= 'N';
-			
-			val.yn === 'y' ? radiobox1.checked = 1 : radiobox2.checked = 1
-			
-			const img = document.createElement('img');
-			img.src = '/image/delete.png';
-			img.className = 'delete-img';
-			img.id = 'delete-img';
-			
-			img.addEventListener('click', function() {
-				deleteItem(grid.getRow(rowKey).id);
-			});
-			
-			const a = document.createElement('a');
-			a.href = '/api/course/get/'+val.id;
-			a.text = val.name;
-			
-			const br = document.createElement('br');
-			label.appendChild(br);
-			label.appendChild(a);
-			label.appendChild(img);
-			label.appendChild(span1);
-			label.appendChild(radiobox1);
-			label.appendChild(span2);
-			label.appendChild(radiobox2);
-		})
+		var label = addLecturer(lecturer);
+		
+		function addLecturer(lecturer){
+			const label = document.createElement('label');
+			label.appendChild(button);
+			lecturer.forEach( (val) => {
+				const span1 = document.createElement('span');
+				span1.innerHTML= '[주]';
+				const radiobox1 = document.createElement('input');
+				radiobox1.type = 'radio';
+				radiobox1.id = 'lecturer-input-y';
+				radiobox1.name = rowKey + '-' + val.id;
+				radiobox1.setAttribute('for', val.id);
+				radiobox1.value= 'Y';
+				
+				const span2 = document.createElement('span');
+				span2.innerHTML= '[보]';
+				const radiobox2 = document.createElement('input');
+				radiobox2.type = 'radio';
+				radiobox2.id = 'lecturer-input-n';
+				radiobox2.name = rowKey + '-' + val.id;
+				radiobox2.setAttribute('for', val.id);
+				radiobox2.value= 'N';
+				
+				val.yn === 'y' ? radiobox1.checked = 1 : radiobox2.checked = 1
+				
+				const img = document.createElement('img');
+				img.src = '/image/delete.png';
+				img.className = 'delete-img';
+				img.id = 'delete-img';
+				
+				img.addEventListener('click', function() {
+					deleteItem(grid.getRow(rowKey).id);
+				});
+				
+				const a = document.createElement('a');
+				a.href = '/api/course/get/'+val.id;
+				a.text = val.name;
+				
+				const br = document.createElement('br');
+				label.appendChild(br);
+				label.appendChild(a);
+				label.appendChild(img);
+				label.appendChild(span1);
+				label.appendChild(radiobox1);
+				label.appendChild(span2);
+				label.appendChild(radiobox2);
+			})
+			return label;
+		}
+		
 		this.el = label;
         }
 
@@ -281,20 +433,22 @@
         scrollY: false,
         draggable: true,
         rowHeight: 100,
-        rowHeaders: [
-          {
+        rowHeaders: ['checkbox'
+          /* {
             type: 'checkbox',
             header: `
             <label for="all-checkbox" class="checkbox">
               <input type="checkbox" id="all-checkbox" class="hidden-input" name="_checked" />
-              <span class="custom-input"></span>
             </label>
           `,
             renderer: {
               type: CheckboxRenderer
             }
-          }
+          } */
         ],
+        pageOptions: {
+            perPage: 5
+		},
         columns: [
           {
             header: '강좌순서',
@@ -329,13 +483,7 @@
             filter: 'select',
             width: '110',
             editor: {
-            	type: 'select',
-            	options: {
-            		listItems: [
-            			{text: 'Y', value: 'Y'},
-            			{text: 'N', value: 'N'},
-            		]
-            	}
+            	type: YnEditor
             }
           },
           {
@@ -348,15 +496,7 @@
             name: 'col1',
             width: '100',
             editor: {
-            	type: 'select',
-            	options: {
-            		listItems: [
-            			{text: '기본역량', value: '기본역량'},
-            			{text: '전문역량', value: '전문역량'},
-            			{text: '기본소양', value: '기본소양'},
-            			{text: '역량/전문', value: '역량/전문'},
-            		]
-            	}
+            	type: Col1SelectEditor
             }
           },
           {
@@ -364,15 +504,7 @@
             name: 'col2',
             width: '100',
             editor: {
-            	type: 'select',
-            	options: {
-            		listItems: [
-            			{text: '일반과목', value: '일반과목'},
-            			{text: '선택과목', value: '선택과목'},
-            			{text: '분반', value: '분반'},
-            			{text: '분임활동', value: '분임활동'},
-            		]
-            	}
+            	type: Col2SelectEditor
             }
           },
           {
@@ -380,25 +512,19 @@
             name: 'col3',
             width: '100',
             editor: {
-            	type: 'select',
-            	options: {
-            		listItems: [
-            			{text: '원격교육', value: '원격교육'},
-            			{text: '집합교육', value: '집합교육'},
-            		]
-            	}
+            	type: Col3SelectEditor
             }
           },
           {
             header: '시수',
             name: 'col4',
             width: '50',
-            editor : {
-            	type: TextEditor,
-            	options: {
-            		maxLength: 3
-            	}
-            }
+            editor: {
+          		type: TextEditor,
+          		options: {
+          			maxLength: 3
+          		}
+          	}
           },
           {
             header: '강사',
@@ -409,20 +535,13 @@
           }
         ]
       });
-
-	grid.on('check', function(ev) {
-		console.log('check', ev);
-	});
-
-	grid.on('uncheck', function(ev) {
-		console.log('uncheck', ev);
-	});
-	
-	document.getElementById('regist-btn').addEventListener('click', () => {
+    
+    document.getElementById('regist-btn').addEventListener('click', () => {
 		grid.getCheckedRowKeys().forEach(rowKey => {
 			var rowData = grid.getRow(rowKey);
 			grid.appendRow(rowData);
-			$.ajax({
+			//grid.request('createData');
+			/* $.ajax({
 				url : '/api/course/post',
 				method : 'post',
 				data : JSON.stringify(rowData),
@@ -430,25 +549,22 @@
 				success : function(result){
 					alert('저장완료');
 				}
-			})
+			}) */
 		});
-			//grid.request('createData');
 	})
 	
 	document.getElementById('modify-btn').addEventListener('click', () => {
-		grid.getCheckedRowKeys().forEach(rowKey => {
-			var rowData = grid.getRow(rowKey);
-			console.log(rowData);
-			$.ajax({
-				url : '/api/course/put',
-				method : 'put',
-				data : JSON.stringify(rowData),
-				contentType : "application/json",
-				success : function(result){
-					console.log(result);
-					alert('저장 완료');
-				}
-			})
+		
+		var rows = grid.getModifiedRows();
+		$.ajax({
+			url : '/api/course/put',
+			method : 'put',
+			data : JSON.stringify(rows.updatedRows),
+			contentType : "application/json",
+			success : function(result){
+				console.log(result);
+				alert('저장 완료');
+			}
 		})
 	})
 	
@@ -468,17 +584,6 @@
 		})
 	})
 	
-	function deleteItem(val){
-		$.ajax({
-			url : '',
-			method : 'delete',
-			data : {'param' : val},
-			contentType : "application/json",
-			success : function(result){
-				
-			}
-		})
-	}
 </script>
 </body>
 </html>

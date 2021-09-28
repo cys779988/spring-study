@@ -1,8 +1,6 @@
-package com.spring.security.config;
+package com.spring.security.model;
 
 import java.io.Serializable;
-
-import com.spring.security.model.UserEntity;
 
 import lombok.Getter;
 

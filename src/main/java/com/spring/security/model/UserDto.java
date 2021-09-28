@@ -9,7 +9,6 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 public class UserDto extends BaseTimeEntity {
-    private String user_id;
     private String name;
     private String email;
     private String password;
@@ -35,7 +34,6 @@ public class UserDto extends BaseTimeEntity {
     
     public UserEntity toEntity() {
     	return UserEntity.builder()
-    			.user_id(user_id)
     			.name(name)
     			.password(password)
     			.email(email)
@@ -45,8 +43,7 @@ public class UserDto extends BaseTimeEntity {
     }
     
     @Builder
-    public UserDto(String user_id, String name, String password, String email, String picture, Role role) {
-        this.user_id = user_id;
+    public UserDto(String name, String password, String email, String picture, Role role) {
         this.name = name;
         this.password = password;
         this.email = email;

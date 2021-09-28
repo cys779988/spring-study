@@ -1,3 +1,4 @@
+/*
 package com.spring.redis.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,3 +40,4 @@ public class CacheConfig {
 		return redisCacheManager;
 	}
 }
+*/
