@@ -13,8 +13,8 @@
 <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.css" />
 <script type="text/javascript" src="https://uicdn.toast.com/tui.pagination/v3.3.0/tui-pagination.js"></script>
 
-<script src="https://uicdn.toast.com/grid/v4.17.0/tui-grid.js"></script>
-<link rel="stylesheet" href="https://uicdn.toast.com/grid/v4.17.0/tui-grid.css" />
+<script src="https://uicdn.toast.com/grid/v4.19.0/tui-grid.js"></script>
+<link rel="stylesheet" href="https://uicdn.toast.com/grid/v4.19.0/tui-grid.css" />
 <meta charset="UTF-8">
 <title>Insert title here</title>
 <style type="text/css">
@@ -139,117 +139,6 @@
 		el.addEventListener('focusout', e => {
 			var gridData = grid.getRow(props.rowKey);
 			gridData.type = e.target.value;
-			grid.dataManager.push('UPDATE', gridData);
-		})
-		
-	    this.el = el;
-	    }
-	    
-	    getElement() {
-	      return this.el;
-	    }
-
-	    getValue() {
-	      return this.el.value;
-	    }
-
-	    mounted() {
-	      this.el.select();
-	    }
-	}
-	
-	class Col1SelectEditor {
-	    constructor(props) {
-	    var gridData = grid.getRow(props.rowKey);
-	    var el = document.createElement('select');
-	    var options = ["기본역량", "전문역량", "기본소양", "역량/전문"];
-	    options.forEach(val => {
-			var option = document.createElement("option");
-	    	option.text = val;
-	    	option.value = val;
-		    if(gridData.col1==val) {
-		    	option.selected = 1;
-		    }  
-		    el.add(option, null);
-	    })
-	    
-		el.addEventListener('focusout', e => {
-			var gridData = grid.getRow(props.rowKey);
-			gridData.col1 = e.target.value;
-			grid.dataManager.push('UPDATE', gridData);
-		})
-		
-	    this.el = el;
-	    }
-	    
-	    getElement() {
-	      return this.el;
-	    }
-
-	    getValue() {
-	      return this.el.value;
-	    }
-
-	    mounted() {
-	      this.el.select();
-	    }
-	}
-	
-	class Col2SelectEditor {
-	    constructor(props) {
-	    var gridData = grid.getRow(props.rowKey);
-	    var el = document.createElement('select');
-	    var options = ["일반과목", "선택과목", "분반", "분임활동"];
-	    options.forEach(val => {
-			var option = document.createElement("option");
-	    	option.text = val;
-	    	option.value = val;
-		    if(gridData.col2==val) {
-		    	option.selected = 1;
-		    }  
-		    el.add(option, null);
-	    })
-	    
-		el.addEventListener('focusout', e => {
-			var gridData = grid.getRow(props.rowKey);
-			gridData.col2 = e.target.value;
-			grid.dataManager.push('UPDATE', gridData);
-		})
-		
-	    this.el = el;
-	    }
-	    
-	    getElement() {
-	      return this.el;
-	    }
-
-	    getValue() {
-	      return this.el.value;
-	    }
-
-	    mounted() {
-	      this.el.select();
-	    }
-	}
-	
-	class Col3SelectEditor {
-	    constructor(props) {
-	    var gridData = grid.getRow(props.rowKey);
-	    var el = document.createElement('select');
-	    var options = ["집합교육", "원격교육"];
-	    options.forEach(val => {
-			var option = document.createElement("option");
-	    	option.text = val;
-	    	option.value = val;
-		    if(gridData.col3==val) {
-		    	option.selected = 1;
-		    }  
-		    el.add(option, null);
-	    })
-	    
-		el.addEventListener('focusout', e => {
-			var gridData = grid.getRow(props.rowKey);
-			gridData.col3 = e.target.value;
 			grid.dataManager.push('UPDATE', gridData);
 		})
 		
@@ -421,11 +310,11 @@
 		api: {
 			readData: { url: '/api/course/get', method: 'GET' },
 			createData: { url: '/api/course/post', method: 'POST' },
-			modifyData: { url: '/api/course/put', method: 'PUT' }
+			modifyData: { url: '/api/course/put', method: 'PUT' },
+			deleteData: { url: '/api/course/delete', method: 'POST' }
 		},
 		contentType: 'application/json'
 	};
-	
     var grid = new tui.Grid({
         el: document.getElementById('grid'),
         data : dataSource,
@@ -483,8 +372,14 @@
             filter: 'select',
             width: '110',
             editor: {
-            	type: YnEditor
-            }
+            	type: 'select',
+                options: {
+					listItems: [
+						{ text: 'Y', value: 'Y' },
+						{ text: 'N', value: 'N' }
+                   ]
+            	}
+			}
           },
           {
             header: '콘텐츠재생시간',
@@ -496,24 +391,46 @@
             name: 'col1',
             width: '100',
             editor: {
-            	type: Col1SelectEditor
-            }
+            	type: 'select',
+                options: {
+					listItems: [
+						{ text: '기본소양', value: '기본소양' },
+						{ text: '기본역량', value: '기본역량' },
+						{ text: '전문역량', value: '전문역량' },
+						{ text: '역량/전문', value: '역량/전문' }
+                   ]
+            	}
+			}
           },
           {
             header: '운영형태',
             name: 'col2',
             width: '100',
             editor: {
-            	type: Col2SelectEditor
-            }
+            	type: 'select',
+                options: {
+					listItems: [
+						{ text: '분반', value: '분반' },
+						{ text: '일반과목', value: '일반과목' },
+						{ text: '선택과목', value: '선택과목' },
+						{ text: '분임활동', value: '분임활동' }
+                   ]
+            	}
+			}
           },
           {
             header: '교육방법',
             name: 'col3',
             width: '100',
             editor: {
-            	type: Col3SelectEditor
-            }
+            	type: 'select',
+                options: {
+					listItems: [
+						{ text: '집합교육', value: '집합교육' },
+						{ text: '원격교육', value: '원격교육' },
+                   ]
+            	}
+			}
           },
           {
             header: '시수',
@@ -535,6 +452,36 @@
           }
         ]
       });
+    tui.Grid.setLanguage('ko');
+    
+	grid.on('errorResponse', function(data) {
+		alert('에러가 발생했습니다.');
+		grid.reloadData();
+	})
+    
+    /* language : {
+    	name : 'ko',
+    	value : {
+    		display: {
+                noData: '데이터가 없습니다.',
+                loadingData: 'Loading data.',
+                resizeHandleGuide: 'You can change the width of the column by mouse drag, ' +
+                                    'and initialize the width by double-clicking.'
+            },
+            net: {
+                confirmCreate: 'Are you sure you want to create {{count}} data?',
+                confirmUpdate: '데이터 {{count}}개를 수정하시겠습니까?',
+                confirmDelete: '데이터 {{count}}개를 삭제하시겠습니까?',
+                confirmModify: '데이터 {{count}}개를 수정하시겠습니까?',
+                noDataToCreate: '생성할 데이터가 없습니다.',
+                noDataToUpdate: '수정할 데이터가 없습니다.',
+                noDataToDelete: '삭제할 데이터가 없습니다.',
+                noDataToModify: '수정할 데이터가 없습니다.',
+                failResponse: 'An error occurred while requesting data.\nPlease try again.'
+            }
+    	}
+    } */
+    
     
     document.getElementById('regist-btn').addEventListener('click', () => {
 		grid.getCheckedRowKeys().forEach(rowKey => {
@@ -554,36 +501,36 @@
 	})
 	
 	document.getElementById('modify-btn').addEventListener('click', () => {
-		
-		var rows = grid.getModifiedRows();
-		$.ajax({
-			url : '/api/course/put',
-			method : 'put',
-			data : JSON.stringify(rows.updatedRows),
-			contentType : "application/json",
-			success : function(result){
-				console.log(result);
-				alert('저장 완료');
-			}
-		})
+		var {rowKey, columnName} = grid.getFocusedCell();
+    	console.log(rowKey, columnName);
+    	if(columnName) {
+    		grid.finishEditing(rowKey, columnName);
+    	}
+		grid.request('modifyData');
 	})
 	
 	document.getElementById('delete-btn').addEventListener('click', () => {
-		grid.getCheckedRowKeys().forEach(rowKey => {
-			var id = grid.getRow(rowKey).id;
-			console.log(id);
-			$.ajax({
-				url : '/api/course/delete/'+ id,
-				method : 'delete',
-				contentType : "application/json",
-				success : function(result){
-					grid.removeRow(rowKey);
-					alert('삭제 완료');
-				}
-			})
-		})
+		deleteRows().then( response => {
+			alert(response);
+			grid.reloadData();
+		});
+		
 	})
 	
+	function deleteRows(){
+    	return new Promise((resolve, reject) => {
+			grid.getCheckedRows().forEach(data => grid.dataManager.push('DELETE', data));
+			grid.request('deleteData', options = {showConfirm : false});
+			resolve('삭제완료');
+		});
+    }
+    
+	/* function deleteRows(){
+		return new Promise(function(resolve, reject){
+			grid.removeCheckedRows();
+			grid.request('deleteData', options = {showConfirm : false});
+		});
+    } */
 </script>
 </body>
 </html>

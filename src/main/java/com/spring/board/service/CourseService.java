@@ -16,6 +16,7 @@ import com.spring.board.repository.CourseRepositorySupport;
 
 import javax.transaction.Transactional;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
@@ -66,8 +67,13 @@ public class CourseService {
     }
 
     @Transactional
-    public void delete(Long id) {
-    	courseRepository.deleteById(id);
+    public void delete(List<CourseDto> param) {
+    	Iterator<CourseDto> iterator =  param.iterator();
+    	
+    	while (iterator.hasNext()) {
+			CourseDto courseDto = (CourseDto) iterator.next();
+			courseRepository.deleteById(courseDto.getId());
+		}
     }
     
     @Transactional

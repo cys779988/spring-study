@@ -1,4 +1,4 @@
-package com.spring;
+package com.spring.board;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;

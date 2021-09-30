@@ -27,4 +27,5 @@ public class WebConfig implements WebMvcConfigurer{
 		registry.addInterceptor(new MyInterceptor())
 		.excludePathPatterns("/css/**", "/fonts/**", "/plugin/**", "/scripts/**");
 	}
+	
 }

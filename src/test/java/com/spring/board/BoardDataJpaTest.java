@@ -1,4 +1,4 @@
-package com.spring;
+package com.spring.board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,20 +10,13 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Page;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.spring.board.model.BoardEntity;
 import com.spring.board.model.CourseDto;
 import com.spring.board.model.CourseEntity;
-import com.spring.board.repository.BoardRepository;
 import com.spring.board.repository.BoardRepositorySupport;
 import com.spring.board.repository.CourseRepository;
-import com.spring.common.util.AppUtil;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -59,29 +52,28 @@ public class BoardDataJpaTest {
 	}
 	
 	@Test
-	@Disabled
 	public void addTest() {
 		List<CourseDto> contentsList = new ArrayList<>();
-		for (int i = 0; i < 3; i++) {
+		for (int i = 0; i < 6; i++) {
 			CourseDto dto =  CourseDto.builder()
-					.courseDiv("테스트")
+					.courseDiv("집합")
 					.name("테스트"+i)
 					.type("Y")
 					.playTime(12)
-					.col1("param1")
-					.col2("테스트")
-					.col3("테스트")
-					.col4("테스트")
-					.col5("21314")
+					.col1("기본역량")
+					.col2("분임활동")
+					.col3("집합교육")
+					.col4("0")
 					.build();
 			contentsList.add(dto);
 			
-			CourseEntity entity =  dto.toEntity();
+			CourseEntity entity = dto.toEntity();
 			courseRepository.save(entity);
 		}
 	}
 	
 	@Test
+	@Disabled
 	public void getCount() {
 		Long count = courseRepository.count();
 		assertThat(count, is(8L));
@@ -93,11 +85,4 @@ public class BoardDataJpaTest {
 		List<CourseEntity> entity = courseRepository.findAll();
 		assertThat(entity.size(), is(6));
 	}
-	/*@Test
-	public void findCountByTitle() {
-		Integer PAGE_POST_COUNT = 5;
-		Integer pageNum = 1;
-		Page<BoardEntity> page =  boardRepository.findByTitleContaining(PageRequest.of(pageNum-1, PAGE_POST_COUNT, Sort.by(Direction.ASC, "createdDate")), "0");
-		System.out.println(page.toString());
-	}*/
 }

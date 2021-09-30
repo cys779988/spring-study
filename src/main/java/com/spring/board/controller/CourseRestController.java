@@ -45,21 +45,28 @@ public class CourseRestController {
 		return ResponseEntity.ok(result);
 	}
 	
-	@PostMapping(value = "/post", consumes = MediaType.APPLICATION_JSON_VALUE)
+	@PostMapping(value = "/post", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity postData(@RequestBody List<CourseDto> param) {
 		courseService.add(param);
-		return ResponseEntity.ok(null);
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "true");
+		
+		return ResponseEntity.ok(result);
 	}
 
-	@PutMapping(value = "/put", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity putData(@RequestBody List<CourseDto> param) {
-		courseService.add(param);
-		return ResponseEntity.ok(null);
+	@PutMapping(value = "/put", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity putData(@RequestBody Map<String, List<CourseDto>> param) {
+		courseService.add(param.get("updatedRows"));
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "true");
+		return ResponseEntity.ok(result);
 	}
 	
-	@DeleteMapping(value = "/delete/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity deleteData(@PathVariable(value = "id") Long id) {
-		courseService.delete(id);
-		return ResponseEntity.ok(null);
+	@PostMapping(value = "/delete")
+	public ResponseEntity deleteData(@RequestBody Map<String, List<CourseDto>> param) {
+		courseService.delete(param.get("deletedRows"));
+		Map<String, Object> result = new HashMap<>();
+		result.put("result", "true");
+		return ResponseEntity.ok(result);
 	}
 }

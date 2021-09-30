@@ -28,13 +28,22 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	runtimeOnly 'mysql:mysql-connector-java'
+
+	testImplementation 'org.springframework.security:spring-security-test'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	implementation 'org.springframework.session:spring-session-jdbc'    
+	//implementation 'org.springframework.session:spring-session-jdbc'    
 	
+	//Socket
+	implementation 'org.springframework.boot:spring-boot-starter-websocket'
+	implementation 'org.webjars.bower:bootstrap:4.3.1'
+    implementation 'org.webjars.bower:axios:0.17.1'
+    implementation 'org.webjars:sockjs-client:1.1.2'
+    implementation 'org.webjars:stomp-websocket:2.3.3-1'
+    implementation 'com.google.code.gson:gson:2.8.0'
+
 	//Redis
-	//implementation 'org.springframework.boot:spring-boot-starter-data-redis'
-	//implementation 'redis.clients:jedis:3.3.0'
-	//implementation 'org.springframework.session:spring-session-data-redis'
+	implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+	implementation 'org.springframework.session:spring-session-data-redis'
 	
 	//QueryDSL
 	implementation("com.querydsl:querydsl-core") // querydsl
