@@ -11,8 +11,6 @@ import org.springframework.core.env.Environment;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.spring.redis.model.MessageDto;
-
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
 class RedisTest {

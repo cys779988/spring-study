@@ -27,9 +27,7 @@
             </div>
 		</div>
 		<ul class="list-group" id="items">
-            <li class="list-group-item list-group-item-action">
-            </li>
-        </ul>
+	    </ul>
 	</div>
 <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
@@ -41,7 +39,12 @@
 	});
 	
 	function getList(){
-		$.ajax({
+        var items = document.getElementById('items');
+        while(items.hasChildNodes()){
+        	items.removeChild(items.firstChild);
+        }
+
+        $.ajax({
 			url : '/chat/rooms',
 			method : 'GET',
 			success : function(result){
@@ -85,9 +88,9 @@
 	function enterRoom(roomId) {
 		var sender = prompt('대화명을 입력해 주세요.');
 		if(sender){
-	        localStorage.setItem('wschat.sender',sender);
-	        localStorage.setItem('wschat.roomId',roomId);
-	        location.href="/chat/room/enter/"+roomId;
+	        localStorage.setItem('wschat.sender', sender);
+	        localStorage.setItem('wschat.roomId', roomId);
+	        location.href="/chat/room/enter/" + roomId;
 		}
 	}
 </script>

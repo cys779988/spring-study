@@ -79,6 +79,7 @@
 					}
 				)
 		);
+		document.getElementsByName('message')[0].value = '';
 	}
 	
 	function recvMessage(recv) {

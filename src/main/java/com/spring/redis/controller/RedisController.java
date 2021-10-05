@@ -22,7 +22,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.spring.redis.model.MessageDto;
+import com.spring.chat.model.ChatMessage;
 import com.spring.redis.service.RedisPublisher;
 import com.spring.redis.service.RedisSubscriber;
 
@@ -64,20 +64,19 @@ public class RedisController {
 		channels.put(roomId, channel);
 	}
 	@PostMapping(value="/room/{roomId}")
-	public void pushMessage(@PathVariable String roomId, @RequestParam String name, @RequestParam String message) {
+	public void pushMessage(@PathVariable String roomId, @RequestParam String sender, @RequestParam String message) {
 		ChannelTopic channel = channels.get(roomId);
-		
-		redisPublisher.publish(channel, MessageDto.builder()
-										.roomId(roomId)
-										.name(name)
-										.message(message)
-										.build());
+		ChatMessage chatMessage = new ChatMessage();
+		chatMessage.setRoomId(roomId);
+		chatMessage.setSender(sender);
+		chatMessage.setMessage(message);
+		redisPublisher.publish(channel, chatMessage);
 	}
 	
 	@PostMapping(value="/", consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> addRedisKey(@RequestBody MessageDto messageDto) {
+	public ResponseEntity<?> addRedisKey(@RequestBody ChatMessage message) {
 		ValueOperations<String, Object> vop = redisTemplate.opsForValue();
-		vop.set(messageDto.getName(), messageDto.getMessage());
+		vop.set(message.getSender(), message.getMessage());
 		return ResponseEntity.ok(null);
 	}
 	

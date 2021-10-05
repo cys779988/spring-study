@@ -47,11 +47,11 @@ public class RedisConfig {
 	public RedisTemplate<String, Object> redisTemplate() {
 		final RedisTemplate<String, Object> redisTemplate = new RedisTemplate<>();
 		
-		redisTemplate.setDefaultSerializer(new StringRedisSerializer());
+		//redisTemplate.setDefaultSerializer(new StringRedisSerializer());
 		redisTemplate.setKeySerializer(new StringRedisSerializer());
 		//redisTemplate.setValueSerializer(new GenericJackson2JsonRedisSerializer());
-		redisTemplate.setHashKeySerializer(new StringRedisSerializer());
-		redisTemplate.setHashValueSerializer(new GenericToStringSerializer<>(Object.class));
+		//redisTemplate.setHashKeySerializer(new StringRedisSerializer());
+		//redisTemplate.setHashValueSerializer(new GenericToStringSerializer<>(Object.class));
 		redisTemplate.setValueSerializer(new Jackson2JsonRedisSerializer<>(Object.class));
 		
 		redisTemplate.setConnectionFactory(connectionFactory());

@@ -6,20 +6,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.chat.model.ChatMessage;
+import com.spring.chat.repository.ChatRoomRepository;
+import com.spring.redis.service.RedisPublisher;
 
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/chat")
 public class ChatController {
 	
-	private final SimpMessageSendingOperations messagingTemplate;
+	private final RedisPublisher redisPublisher;
+	private final ChatRoomRepository chatRoomRepository;
 	
 	@MessageMapping("/chat/message")
 	public void message(ChatMessage message) {
-		if(ChatMessage.MessageType.ENTER.equals(message.getType()))
+		if(ChatMessage.MessageType.ENTER.equals(message.getType())) {
+			chatRoomRepository.enterChatRoom(message.getRoomId());
 			message.setMessage(message.getSender() + "님이 입장하셨습니다.");
-		messagingTemplate.convertAndSend("/sub/chat/room/" + message.getRoomId(), message);
+		}
+		redisPublisher.publish(chatRoomRepository.getTopic(message.getRoomId()), message);
 	}
 }
