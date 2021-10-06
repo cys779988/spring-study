@@ -1,3 +1,4 @@
+/*
 package com.spring.redis.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,3 +17,4 @@ public class RedisPublisher {
 		redisTemplate.convertAndSend(topic.getTopic(), message);
 	}
 }
+*/

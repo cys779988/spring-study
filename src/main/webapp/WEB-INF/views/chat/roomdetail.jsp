@@ -23,10 +23,9 @@
 </style>
 </head>
 <body>
+<div id="page-wrapper">
+	<c:import url="../common/header.jsp"></c:import>
 	<div class="container">
-		<div id="header">
-			<c:import url="../common/header.jsp"></c:import>
-		</div>
 		<div>
 			<input type="hidden" value="${roomId}" name="roomId"> 
 		</div>
@@ -44,6 +43,8 @@
        	</ul>
        	</div>
 	</div>
+</div>
+<script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script src="/webjars/stomp-websocket/2.3.3-1/stomp.min.js"></script>
 <script>
@@ -54,6 +55,7 @@
 	var roomId = document.getElementsByName('roomId')[0].value;
 	window.addEventListener('DOMContentLoaded', (e) => {
 		e.preventDefault();
+		created();
 	});
 	
 	
@@ -67,15 +69,32 @@
 		sendMessage();
 	});
 	
-	function sendMessage() {
+	function created(){
+		var _this = this;
+		axios.get('/chat/user').then(response => {
+			_this.token = response.data.token;
+			ws.connect({"token" : _this.token}, function(frame){
+				ws.subscribe("/sub/chat/room/"+ _this.roomId, function(message){
+					var recv = JSON.parse(message.body);
+					_this.recvMessage(recv);
+				});
+				_this.sendMessage('ENTER');
+			}, function(error) {
+				alert('서버 연결에 실패했습니다.');
+				//location.href = "/chat/room";
+			})
+		})
+	}
+	
+	function sendMessage(type) {
 		var message = document.getElementsByName('message')[0].value;
 		ws.send("/pub/chat/message"
-				, {}
+				, {"token" : token}
 				, JSON.stringify({
-					type:'TALK'
-					, roomId: roomId
-					, sender: localStorage.getItem('wschat.sender')
-					, message: message
+					type : type
+					, roomId : roomId
+					, sender : localStorage.getItem('wschat.sender')
+					, message : message
 					}
 				)
 		);
@@ -90,6 +109,8 @@
 		});
 		chatUpdate(recv);
 	}
+	
+	/* 
 	ws.connect({}, function(frame) {
 		ws.subscribe("/sub/chat/room/"+ roomId, function(message) {
 			var recv = JSON.parse(message.body);
@@ -108,7 +129,7 @@
 		
 	}, function(error) {
 		alert(error);
-	})
+	}) */
 	
 	function chatUpdate(messages){
 		console.log(messages);

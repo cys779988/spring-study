@@ -62,7 +62,7 @@ public class UserController implements HttpSessionListener{
 			}
 			
 			//return "/signup";
-			return Long.parseLong("999");
+			return 1L;
 		}
 		
 		//userService.joinUser(userDto);

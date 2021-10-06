@@ -18,6 +18,8 @@ import org.springframework.data.redis.serializer.GenericToStringSerializer;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
+import com.spring.redis.service.RedisSubscriber;
+
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -60,21 +62,24 @@ public class RedisConfig {
 	}
 	
 	@Bean
-	public MessageListenerAdapter messageListenerAdapter() {
-		return new MessageListenerAdapter(new RedisMessageSubscriber());
-	}
-	
-	@Bean
-	@Primary
-	public RedisMessageListenerContainer redisContainer() {
-		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
-		container.setConnectionFactory(connectionFactory());
-		container.addMessageListener(messageListenerAdapter(), topic());
-		return container;
+	public MessageListenerAdapter listenerAdapter(RedisSubscriber subscriber) {
+		return new MessageListenerAdapter(subscriber, "sendMessage");
 	}
 	
 	@Bean
 	public ChannelTopic topic() {
 		return new ChannelTopic(redisChannel);
 	}
+
+	@Bean
+	@Primary
+	public RedisMessageListenerContainer redisContainer(RedisConnectionFactory connectionFactory,
+														MessageListenerAdapter listenerAdapter,
+														ChannelTopic channelTopic) {
+		RedisMessageListenerContainer container = new RedisMessageListenerContainer();
+		container.setConnectionFactory(connectionFactory);
+		container.addMessageListener(listenerAdapter, channelTopic);
+		return container;
+	}
+	
 }

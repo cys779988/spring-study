@@ -8,14 +8,10 @@
 <title>Insert title here</title>
 </head>
 <body>
+<div id="page-wrapper">
+	<c:import url="../common/header.jsp"></c:import>
 	<div class="container">
-		<div id="header">
-			<c:import url="../common/header.jsp"></c:import>
-		</div>
 		<div class="row">
-			<div class="col-md-12">
-				<h2>채팅방 List</h2>
-			</div>
 		</div>
 		<div class="input-group">
 			<div class="input-group-prepend">
@@ -29,6 +25,7 @@
 		<ul class="list-group" id="items">
 	    </ul>
 	</div>
+</div>
 <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script>
@@ -86,12 +83,9 @@
 	})
 	
 	function enterRoom(roomId) {
-		var sender = prompt('대화명을 입력해 주세요.');
-		if(sender){
-	        localStorage.setItem('wschat.sender', sender);
-	        localStorage.setItem('wschat.roomId', roomId);
-	        location.href="/chat/room/enter/" + roomId;
-		}
+	    localStorage.setItem('wschat.sender', '${sessionScope.user.name}');
+	    localStorage.setItem('wschat.roomId', roomId);
+		location.href="/chat/room/enter/" + roomId;
 	}
 </script>
 </body>

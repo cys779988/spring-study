@@ -24,13 +24,16 @@
 </style>
 </head>
 <body>
-<div class='container'>
-  <div class="btn-wrapper">
-        <button id="regist-btn">추가</button>
-        <button id="modify-btn">저장</button>
-        <button id="delete-btn">삭제</button>
-      </div>
-   <div id="grid"></div>
+<div id="page-wrapper">
+	<c:import url="../common/header.jsp"></c:import>
+	<div class='container'>
+	  <div class="btn-wrapper">
+	        <button class="btn btn-primary" id="regist-btn">추가</button>
+	        <button class="btn btn-primary" id="modify-btn">저장</button>
+	        <button class="btn btn-primary" id="delete-btn">삭제</button>
+	      </div>
+	   <div id="grid"></div>
+	</div>
 </div>
 <script type="text/javascript" src="/js/common.js" ></script> 
 <script>

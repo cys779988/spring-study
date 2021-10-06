@@ -22,20 +22,22 @@ import lombok.RequiredArgsConstructor;
 public class ChatRoomRepository {
 	
 	// 채팅방(topic)에 발행되는 메시지를 처리할 Listener
-	private final RedisMessageListenerContainer redisMessageListener;
+	//private final RedisMessageListenerContainer redisMessageListener;
+	
 	// 구독 처리 서비스
-	private final RedisSubscriber redisSubscriber;
+	//private final RedisSubscriber redisSubscriber;
+	
 	// Redis
 	private static final String CHAT_ROOMS = "CHAT_ROOM";
 	private final RedisTemplate<String, Object> redisTemplate;
 	private HashOperations<String, String, ChatRoom> opsHashChatRoom;
-	private Map<String, ChannelTopic> topics;
+	//private Map<String, ChannelTopic> topics;
 	
 	
 	@PostConstruct
 	private void init() {
 		opsHashChatRoom = redisTemplate.opsForHash();
-		topics = new HashMap<>();
+		//topics = new HashMap<>();
 	}
 	
 	public List<ChatRoom> findAllRoom() {
@@ -52,6 +54,7 @@ public class ChatRoomRepository {
         return chatRoom;
     }
 	
+	/*
 	public void enterChatRoom(String roomId) {
 		ChannelTopic topic = topics.get(roomId);
 		if(topic == null) {
@@ -60,8 +63,11 @@ public class ChatRoomRepository {
 			topics.put(roomId, topic);
 		}
 	}
+	*/
 	
+	/*
 	public ChannelTopic getTopic(String roomId) {
 		return topics.get(roomId);
-		}
 	}
+	 */
+}

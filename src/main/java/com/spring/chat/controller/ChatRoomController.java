@@ -2,6 +2,11 @@ package com.spring.chat.controller;
 
 import java.util.List;
 
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +17,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.spring.chat.model.ChatRoom;
+import com.spring.chat.model.LoginInfo;
 import com.spring.chat.repository.ChatRoomRepository;
+import com.spring.chat.service.JwtTokenProvider;
+import com.spring.security.model.SessionUser;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,7 +28,9 @@ import lombok.RequiredArgsConstructor;
 @Controller
 @RequestMapping("/chat")
 public class ChatRoomController {
+
 	private final ChatRoomRepository chatRoomRepository;
+	private final JwtTokenProvider jwtTokenProvider;
 	
 	@GetMapping("/room")
 	public String rooms(Model model) {
@@ -51,5 +61,12 @@ public class ChatRoomController {
 		return chatRoomRepository.findRoomById(roomId);
 	}
 	
-	
+	@GetMapping("/user")
+	@ResponseBody
+	public LoginInfo getUserInfo() {
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		DefaultOAuth2User userDetails = (DefaultOAuth2User)auth.getPrincipal();
+		String name =  userDetails.getAttribute("name");
+		return LoginInfo.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
+	}
 }

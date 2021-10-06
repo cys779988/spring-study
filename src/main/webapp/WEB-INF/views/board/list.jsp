@@ -8,11 +8,9 @@
     <!-- <link rel="stylesheet" href="/css/board.css"> -->
 </head>
 <body>
-<div class="container">
-	<div id="header">
-		<c:import url="../common/header.jsp"></c:import>
-	</div>
-
+<div id="page-wrapper">
+	<c:import url="../common/header.jsp"></c:import>
+	<div class="container">
     	<div class="row">
 	    	<div class="col">
 		        <div class="search">
@@ -60,15 +58,15 @@
         </tbody>
     </table>
 
-	    <div id="page" class="position-relative start-50">
+	    <div class="position-relative start-50">
+	    	<ul id="page" class="pagination">
+	    	</ul>
 	    <%-- <c:forEach var="pageNum" items="${pageList}">
 		    <span>
 		        <a href="?page=${pageNum}">[${pageNum}]</a>
 		    </span>
 	    </c:forEach> --%>
 	    </div>
-	<div id="footer">
-		<c:import url="../common/footer.jsp"></c:import>
 	</div>
 </div>
 <script>
@@ -107,15 +105,15 @@
 					boardList += '<tr><td>' + board.id + '</td>';
 					boardList += '<td>' + '<a href="post/'+ board.id + '">' + board.title + '</a> </td>';
 					boardList += '<td>' + board.writer + '</td>';
-					boardList += '<td>' + board.createDate + '</td></tr>';
+					boardList += '<td>' + board.createdDate + '</td></tr>';
 				});
 				$('#boardList').append(boardList);
 				
 				var pageList = '';
-				result.pageList.forEach((page)=> {
-					if(page!=null){
-						pageList += '<span> <a id= "paging" data-page="' + page + '" onclick="paging(this)">' + page + '</a></span>';
-					}
+				result.pageList.filter(item=> item!=null).forEach((item)=> {
+					item==page ? 
+						(pageList += '<li class="page-item active"> <a class="page-link" id= "paging" data-page="' + item + '" onclick="paging(this)" href="#">' + item + '</a></li>'):
+						(pageList += '<li class="page-item"> <a class="page-link" id= "paging" data-page="' + item + '" onclick="paging(this)" href="#">' + item + '</a></li>')
 				});
 				
 				$('#page').append(pageList);

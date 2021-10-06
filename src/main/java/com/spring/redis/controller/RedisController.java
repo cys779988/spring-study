@@ -57,12 +57,14 @@ public class RedisController {
 		return channels.keySet();
 	}
 	
+	/*
 	@PutMapping(value="/room/{roomId}")
 	public void createRoom(@PathVariable String roomId) {
 		ChannelTopic channel = new ChannelTopic(roomId);
 		redisMessageListener.addMessageListener(redisSubscriber, channel);
 		channels.put(roomId, channel);
 	}
+	*/
 	@PostMapping(value="/room/{roomId}")
 	public void pushMessage(@PathVariable String roomId, @RequestParam String sender, @RequestParam String message) {
 		ChannelTopic channel = channels.get(roomId);

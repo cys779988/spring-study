@@ -39,7 +39,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		http.authorizeRequests()
 				// 페이지권한설정
 				.antMatchers("/admin/**").hasRole("ADMIN")
-				.antMatchers("/user/info").hasAnyRole("MEMBER, ADMIN")
+				.antMatchers("/chat/**").hasAnyRole("GUEST, ADMIN")
+				.antMatchers("/board/**").hasAnyRole("GUEST, ADMIN")
 				.antMatchers("/api/**").permitAll()
 			.and()
 				.formLogin()
@@ -50,7 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.and()	// 로그아웃설정
 				.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
-				.logoutSuccessUrl("/user/logout/result")
+				.logoutSuccessUrl("/user/login")
 				.invalidateHttpSession(true)
 			.and()
 				.oauth2Login()
