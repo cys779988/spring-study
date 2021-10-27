@@ -1,6 +1,11 @@
 package com.spring.board.controller;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -9,10 +14,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.spring.board.model.BoardDto;
+import com.spring.board.model.CourseDto;
 import com.spring.board.service.BoardService;
 import com.spring.common.config.PerLogging;
+import com.spring.common.util.AppUtil;
 
 import lombok.AllArgsConstructor;
 

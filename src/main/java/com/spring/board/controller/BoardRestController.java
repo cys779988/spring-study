@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.spring.board.model.BoardDto;
 import com.spring.board.service.BoardService;
+import com.spring.common.util.AppUtil;
 
 import lombok.AllArgsConstructor;
 
@@ -40,12 +41,28 @@ public class BoardRestController {
 	public ResponseEntity getBoards(@RequestParam(value="page", required = false) Integer page, 
 			@RequestParam(value="keyword", required = false) String keyword) {
 		List<BoardDto> boardList = boardService.getBoardList(page, keyword);
-		Integer[] pageList = boardService.getPageList(page, keyword);
-		Map<String, Object> response = new HashMap<>();
-		response.put("boardList", boardList);
-		response.put("pageList", pageList);
-		return ResponseEntity.ok(response);
+		
+		Long totalCount = boardService.getBoardCount(keyword);
+		
+		Map<String, Object> pagination = new HashMap<>();
+		pagination.put("page", page);
+		pagination.put("totalCount", totalCount);
+		AppUtil appUtil = new AppUtil(boardList, pagination);
+		
+		return ResponseEntity.ok(appUtil.getData());
 	}
+	
+	/*
+	 * @GetMapping(value="/get", produces = MediaType.APPLICATION_JSON_VALUE) public
+	 * ResponseEntity getBoards(@RequestParam(value="page", required = false)
+	 * Integer page,
+	 * 
+	 * @RequestParam(value="keyword", required = false) String keyword) {
+	 * List<BoardDto> boardList = boardService.getBoardList(page, keyword);
+	 * Integer[] pageList = boardService.getPageList(page, keyword); Map<String,
+	 * Object> response = new HashMap<>(); response.put("boardList", boardList);
+	 * response.put("pageList", pageList); return ResponseEntity.ok(response); }
+	 */
 	
 	@GetMapping(value = "/{no}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<BoardDto> get(@PathVariable("no") Long no) {

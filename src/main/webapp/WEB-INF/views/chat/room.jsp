@@ -7,25 +7,35 @@
 <meta charset="UTF-8">
 <title>Insert title here</title>
 </head>
-<body>
-<div id="page-wrapper">
+<body class="sb-nav-fixed">
 	<c:import url="../common/header.jsp"></c:import>
-	<div class="container">
-		<div class="row">
+	<div id="layoutSidenav">
+	<c:import url="../common/nav.jsp"></c:import>
+		<div id="layoutSidenav_content">
+			<main>
+				<div class="container-fluid px-4">
+					<div class="card mb-4">
+						<div class="card-body">
+							<div class="input-group">
+								<div class="input-group-prepend">
+									<label class="input-group-text">방제목</label>
+								</div>
+								<input type="text" class="form-control" name="room_name">
+								<div class="input-group-append">
+					                <button class="btn btn-primary" type="button" id="create-btn">채팅방 개설</button>
+					            </div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="container-fluid px-4">
+					<ul class="list-group" id="items">
+				    </ul>
+				</div>
+			</main>
+			<c:import url="../common/footer.jsp"></c:import>
 		</div>
-		<div class="input-group">
-			<div class="input-group-prepend">
-				<label class="input-group-text">방제목</label>
-			</div>
-			<input type="text" class="form-control" name="room_name">
-			<div class="input-group-append">
-                <button class="btn btn-primary" type="button" id="create-btn">채팅방 개설</button>
-            </div>
-		</div>
-		<ul class="list-group" id="items">
-	    </ul>
 	</div>
-</div>
 <script src="/webjars/axios/0.17.1/dist/axios.min.js"></script>
 <script src="/webjars/sockjs-client/1.1.2/sockjs.min.js"></script>
 <script>

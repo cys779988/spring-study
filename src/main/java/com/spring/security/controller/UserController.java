@@ -34,7 +34,7 @@ public class UserController implements HttpSessionListener{
 		if(user != null) {
 			model.addAttribute("userName", user.getName());
 		}
-		return "/board/list";
+		return "/index";
 	}
 
 	@ResponseBody
@@ -47,7 +47,12 @@ public class UserController implements HttpSessionListener{
 	public String dispSignup(Model model) {
 		UserDto userDto = new UserDto();
 		model.addAttribute("userDto", userDto);
-		return "/signup";
+		return "/user/signup";
+	}
+
+	@GetMapping("/user/password")
+	public String setPassword(Model model) {
+		return "/user/password";
 	}
 
 	@ResponseBody
@@ -71,27 +76,19 @@ public class UserController implements HttpSessionListener{
 
 	@GetMapping("/user/login")
 	public String dispLogin() {
+		/*
 		ThreadLocal<UserInformation> local = new ThreadLocal<>();
 		UserInformation user = new UserInformation();
 		local.set(user);
 		UserInformation user2 = new UserInformation();
 		user2 = local.get();
-		return "/login";
-	}
-
-	@GetMapping("/user/logout/result")
-	public String dispLogout() {
-		return "/logout";
-	}
-
-	@GetMapping("/user/denied")
-	public String dispDenied() {
-		return "/denied";
+		*/
+		return "/user/login";
 	}
 
 	@GetMapping("/user/info")
 	public String dispMyInfo() {
-		return "/myinfo";
+		return "/user/myinfo";
 	}
 
 	@GetMapping("/admin")

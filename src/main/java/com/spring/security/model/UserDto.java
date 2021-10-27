@@ -8,10 +8,11 @@ import lombok.*;
 @Setter
 @ToString
 @NoArgsConstructor
-public class UserDto extends BaseTimeEntity {
-    private String name;
+public class UserDto extends BaseTimeEntity{
+	
+	private String name;
     private String email;
-    private String password;
+    transient private String password;
     private String picture;
     private Role role;
 

@@ -5,9 +5,9 @@ import java.util.List;
 import java.util.Map;
 
 public class AppUtil {
+	private Map<String, Object> readData = new HashMap<>();
 	
-	public Map<String, Object> convertGridData(List<?> param, Map<String, Object> page) {
-		Map<String, Object> readData = new HashMap<>();
+	public AppUtil(List<?> param, Map<String, Object> page) {
 		Map<String, Object> data = new HashMap<>();
 		
 		data.put("contents", param);
@@ -16,6 +16,10 @@ public class AppUtil {
 		readData.put("result", "true");
 		readData.put("data", data);
 		
+	}
+	
+	public Map<String, Object> getData(){
 		return readData;
 	}
+	
 }
