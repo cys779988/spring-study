@@ -10,9 +10,7 @@ import org.springframework.stereotype.Component;
 import com.spring.chat.service.JwtTokenProvider;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
-@Slf4j
 @RequiredArgsConstructor
 @Component
 public class StompHandler implements ChannelInterceptor{

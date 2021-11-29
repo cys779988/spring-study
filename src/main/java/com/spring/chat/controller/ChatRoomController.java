@@ -4,8 +4,6 @@ import java.util.List;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,7 +18,6 @@ import com.spring.chat.model.ChatRoom;
 import com.spring.chat.model.LoginInfo;
 import com.spring.chat.repository.ChatRoomRepository;
 import com.spring.chat.service.JwtTokenProvider;
-import com.spring.security.model.SessionUser;
 
 import lombok.RequiredArgsConstructor;
 

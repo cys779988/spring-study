@@ -16,7 +16,7 @@
                                 <div class="sb-nav-link-icon"><i class="fas fa-sign-in-alt"></i></div>
                                 SignUp
                             </a>
-                            <div class="sb-sidenav-menu-heading">Interface</div>
+                            <!-- <div class="sb-sidenav-menu-heading">Interface</div>
                             <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseLayouts" aria-expanded="false" aria-controls="collapseLayouts">
                                 <div class="sb-nav-link-icon"><i class="fas fa-columns"></i></div>
                                 Layouts
@@ -27,8 +27,8 @@
                                     <a class="nav-link" href="#">Static Navigation</a>
                                     <a class="nav-link" href="#">Light Sidenav</a>
                                 </nav>
-                            </div>
-                            <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
+                            </div> -->
+                            <!-- <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="false" aria-controls="collapsePages">
                                 <div class="sb-nav-link-icon"><i class="fas fa-book-open"></i></div>
                                 Pages
                                 <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
@@ -56,7 +56,7 @@
                                         </nav>
                                     </div>
                                 </nav>
-                            </div>
+                            </div> -->
                             <div class="sb-sidenav-menu-heading">Addons</div>
 	                            <a class="nav-link" href="#">
 		                            <div class="sb-nav-link-icon"><i class="fas fa-chart-area"></i></div>
@@ -66,7 +66,7 @@
 		                            <div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
 		                            Board
 	                            </a>
-	                            <a class="nav-link" href="<c:url value='/board/courseList'/>">
+	                            <a class="nav-link" href="<c:url value='/course/'/>">
 	                            	<div class="sb-nav-link-icon"><i class="fas fa-table"></i></div>
 	                            	Course
 	                            </a>

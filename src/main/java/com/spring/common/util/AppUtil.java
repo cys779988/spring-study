@@ -1,25 +1,19 @@
 package com.spring.common.util;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
-public class AppUtil {
-	private Map<String, Object> readData = new HashMap<>();
-	
-	public AppUtil(List<?> param, Map<String, Object> page) {
-		Map<String, Object> data = new HashMap<>();
-		
-		data.put("contents", param);
-		data.put("pagination", page);
+import com.spring.security.model.UserContext;
 
-		readData.put("result", "true");
-		readData.put("data", data);
-		
+
+public class AppUtil{
+	public static String getUser() {
+		if(SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof DefaultOAuth2User) {
+			DefaultOAuth2User userInfo = (DefaultOAuth2User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return userInfo.getAttribute("email");
+		} else {
+			UserContext userInfo = (UserContext)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return userInfo.getUsername();
+		}
 	}
-	
-	public Map<String, Object> getData(){
-		return readData;
-	}
-	
 }
