@@ -7,6 +7,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.*;
 
 import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.spring.board.model.BoardDto;
 import com.spring.board.model.BoardEntity;
 import com.spring.board.repository.BoardRepository;
@@ -55,22 +57,38 @@ public class BoardDataJpaTest {
 	}
 
 	@Test
-	public void addTest() {
+	@DisplayName("Board 등록 후 조회")
+	public void addBoard() throws JsonProcessingException {
 		BoardDto dto = BoardDto.builder()
-						.content("테스트내용")
-						.registrant("cys@test.com")
-						.title("테스트제목")
-						.build();
+				.content("테스트내용")
+				.registrant("cys@test.com")
+				.title("테스트제목")
+				.build();
 
 		BoardEntity entity = dto.toEntity();
-		boardRepository.save(entity);
+		Long id = boardRepository.save(entity).getId();
+		
+		assertThat(boardRepository.findById(id).get().getId(), is(id));
 	}
 
 	@Test
-	@Disabled
-	public void getCount() {
-		Long count = boardRepository.count();
-		assertThat(count, is(8L));
+	@DisplayName("Board 삭제")
+	public void deleteBoard() throws JsonProcessingException {
+		Long beforeCount = boardRepository.count();
+		
+		BoardDto dto = BoardDto.builder()
+				.content("테스트내용")
+				.registrant("cys@test.com")
+				.title("테스트제목")
+				.build();
+		
+		BoardEntity entity = dto.toEntity();
+		Long id = boardRepository.save(entity).getId();
+
+		boardRepository.deleteById(id);
+		
+		Long afterCount = boardRepository.count();
+		assertThat(beforeCount - afterCount, is(0L));
 	}
 
 }

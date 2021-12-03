@@ -27,14 +27,12 @@ public class QGroupEntity extends EntityPathBase<GroupEntity> {
     //inherited
     public final DateTimePath<java.time.LocalDateTime> createdDate = _super.createdDate;
 
-    public final NumberPath<Long> id = createNumber("id", Long.class);
+    public final NumberPath<Long> divNo = createNumber("divNo", Long.class);
 
-    public final com.spring.security.model.QUserEntity member;
+    public final QGroupID id;
 
     //inherited
     public final DateTimePath<java.time.LocalDateTime> modifiedDate = _super.modifiedDate;
-
-    public final com.spring.security.model.QUserEntity registrant;
 
     public QGroupEntity(String variable) {
         this(GroupEntity.class, forVariable(variable), INITS);
@@ -54,8 +52,7 @@ public class QGroupEntity extends EntityPathBase<GroupEntity> {
 
     public QGroupEntity(Class<? extends GroupEntity> type, PathMetadata metadata, PathInits inits) {
         super(type, metadata, inits);
-        this.member = inits.isInitialized("member") ? new com.spring.security.model.QUserEntity(forProperty("member")) : null;
-        this.registrant = inits.isInitialized("registrant") ? new com.spring.security.model.QUserEntity(forProperty("registrant")) : null;
+        this.id = inits.isInitialized("id") ? new QGroupID(forProperty("id"), inits.get("id")) : null;
     }
 
 }

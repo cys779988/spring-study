@@ -35,8 +35,14 @@ public class UserController implements HttpSessionListener{
 	}
 
 	@GetMapping("/user/password")
-	public String setPassword(Model model) {
+	public String passwordView(Model model) {
 		return "/user/password";
+	}
+
+	@PostMapping("/user/password")
+	public String resetPassword(UserDto userDto) {
+		userService.resetPassword(userDto);
+		return "/user/login";
 	}
 
 	@PostMapping("/user/signup")
@@ -49,13 +55,13 @@ public class UserController implements HttpSessionListener{
 				model.addAttribute(key, validatorResult.get(key));
 			}
 			return "/user/signup";
-		}
-		if(!userService.findByEmail(userDto.getEmail())) {
+		} else if(userService.findByEmail(userDto.getEmail())) {
 			model.addAttribute("valid_email", "해당 이메일 계정이 존재합니다.");
 			return "/user/signup";
+		} else {
+			userService.joinUser(userDto);
 		}
 		
-		userService.joinUser(userDto);
 		return "redirect:/user/login";
 	}
 

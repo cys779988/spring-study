@@ -25,7 +25,7 @@ public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationS
 	@Override
 	public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
 			Authentication authentication) throws IOException, ServletException {
-		setDefaultTargetUrl("/");
+		setDefaultTargetUrl("/board/");
 		SavedRequest savedRequest = requestCache.getRequest(request, response);
 		if(savedRequest != null) {
 			redirectStrategy.sendRedirect(request, response, savedRequest.getRedirectUrl());

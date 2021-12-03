@@ -17,6 +17,7 @@ import com.spring.board.repository.BoardRepositorySupport;
 import com.spring.board.repository.ReplyRepository;
 import com.spring.common.util.PageVO;
 import com.spring.common.util.AppUtil;
+import com.spring.security.model.UserEntity;
 import com.spring.security.repository.UserRepository;
 
 import javax.transaction.Transactional;
@@ -28,7 +29,6 @@ import java.util.Optional;
 @AllArgsConstructor
 @Service
 public class BoardService {
-	private UserRepository userRepository;
     private BoardRepository boardRepository;
     private ReplyRepository replyRepository;
     private BoardRepositorySupport boardRepositorySupport;
@@ -77,15 +77,15 @@ public class BoardService {
     @Transactional
     public Long addBoard(BoardDto boardDto) {
     	BoardEntity entity = boardDto.toEntity();
-    	entity.setRegistrant(userRepository.findById(AppUtil.getUser()).get());
+    	entity.setRegistrant(UserEntity.builder().email(AppUtil.getUser()).build());
         return boardRepository.save(entity).getId();
     }
 
     @Transactional
 	public void addReply(ReplyDto replyDto) {
     	ReplyEntity entity = replyDto.toEntity();
-    	entity.setRegistrant(userRepository.findById(AppUtil.getUser()).get());
-    	entity.setBoard(boardRepository.findById(replyDto.getBoardId()).get());
+    	entity.setRegistrant(UserEntity.builder().email(AppUtil.getUser()).build());
+    	entity.setBoard(BoardEntity.builder().id(replyDto.getBoardId()).build());
         replyRepository.save(entity);
 	}
 	

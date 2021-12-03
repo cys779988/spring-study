@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 import org.springframework.validation.FieldError;
 
+import com.spring.common.exception.BusinessException;
+import com.spring.common.model.ErrorCode;
 import com.spring.security.model.Role;
 import com.spring.security.model.UserContext;
 import com.spring.security.model.UserEntity;
@@ -43,7 +45,7 @@ public class UserService implements UserDetailsService{
 
 	public boolean findByEmail(String email) {
 		Optional<UserEntity> entity = userRepository.findById(email);
-		return entity.isEmpty();
+		return entity.isPresent();
 	}
 	
     @Transactional
@@ -58,7 +60,7 @@ public class UserService implements UserDetailsService{
     public UserDetails loadUserByUsername(String userEmail) throws UsernameNotFoundException {
         Optional<UserEntity> userEntityWrapper = userRepository.findById(userEmail);
         
-        if(userEntityWrapper.isEmpty()) {
+        if(!userEntityWrapper.isPresent()) {
         	throw new UsernameNotFoundException("UsernameNotFoundException");
         }
         
@@ -71,4 +73,16 @@ public class UserService implements UserDetailsService{
         
         return userContext;
     }
+
+	public void resetPassword(UserDto userDto) {
+		BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+		Optional<UserEntity> entityWrapper = userRepository.findById(userDto.getEmail());
+		if(entityWrapper.isPresent()) {
+			UserEntity userEntity = entityWrapper.get();
+			userEntity.setPassword(passwordEncoder.encode("1111"));
+			userRepository.save(userEntity);
+		} else {
+			throw new BusinessException(ErrorCode.NOTFOUND_EMAIL);
+		}
+	}
 }

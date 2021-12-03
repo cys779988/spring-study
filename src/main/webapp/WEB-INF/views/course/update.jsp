@@ -94,6 +94,15 @@ h1 {
 									<div class="col-auto">
 										<input type="text" class="form-control" id="addContent1" placeholder="Node Content" maxlength="20">
 									</div>
+									<div class="col-auto">
+								        <select class="form-select" id="addShape1">
+								        	<option value="ellipse" selected="selected">원</option>
+								        	<option value="triangle">삼각형</option>
+								        	<option value="rectangle">사각형</option>
+								        	<option value="diamond">마름모</option>
+								        	<option value="star">별</option>
+								        </select>
+									</div>
 								    <div class="col-auto">
 								      <button class="btn btn-outline-dark" id="sipNode-add-btn">노드추가</button>
 								      <button class="btn btn-outline-dark" id="drawOn-btn">그리기모드 on</button>
@@ -145,6 +154,18 @@ h1 {
 							                                        <input type="text" class="form-control" id="nodeContent" maxlength="20">
 							                                    </td>
 							                                </tr>
+							                                <tr>
+							                                    <th>shape</th>
+							                                    <td colspan="3">
+							                                    	<select class="form-select" id="nodeShape">
+							                                    		<option value="ellipse" selected="selected">원</option>
+							                                    		<option value="triangle">삼각형</option>
+							                                    		<option value="rectangle">사각형</option>
+							                                    		<option value="diamond">마름모</option>
+							                                    		<option value="star">별</option>
+							                                    	</select>
+							                                    </td>
+							                                </tr>
 							                            </tbody>
 							                        </table>
 						                        </form>
@@ -171,6 +192,18 @@ h1 {
 							                                    <th>content</th>
 							                                    <td colspan="3">
 							                                        <input type="text" class="form-control" id="addContent" maxlength="20">
+							                                    </td>
+							                                </tr>
+							                                <tr>
+							                                    <th>shape</th>
+							                                    <td colspan="3">
+							                                    	<select class="form-select" id="addShape">
+							                                    		<option value="ellipse" selected="selected">원</option>
+							                                    		<option value="triangle">삼각형</option>
+							                                    		<option value="rectangle">사각형</option>
+							                                    		<option value="diamond">마름모</option>
+							                                    		<option value="star">별</option>
+							                                    	</select>
 							                                    </td>
 							                                </tr>
 							                            </tbody>
@@ -249,7 +282,8 @@ h1 {
 		        	        'text-outline-width': 2,
 		        	        'text-outline-color': '#888',
 		        	        'background-color': '#888',
-		        	        'font-size' : 7
+		        	        'font-size' : 7,
+		        	        'shape' : 'data(shape)'
 		                }
 		            	},
 			            {
@@ -268,7 +302,7 @@ h1 {
 			                'height': 12,
 			                'shape': 'ellipse',
 			                'overlay-opacity': 0,
-			                'border-width': 12, // makes the handle easier to hit
+			                'border-width': 12,
 			                'border-opacity': 0
 			              }
 			            },
@@ -351,6 +385,7 @@ h1 {
 				myModal.show();
 				document.getElementById('nodeId').value = e.target._private.data.name;
 				document.getElementById('nodeContent').value = e.target._private.data.content;
+				document.getElementById('nodeShape').value = e.target._private.data.shape;
 			});
 			
 			cy.on('tap', 'edge', e => {
@@ -446,9 +481,11 @@ h1 {
 		let id = document.getElementById('id').value;
 		let nodeId = document.getElementById('nodeId').value;
 		let content = document.getElementById('nodeContent').value;
+		let shape = document.getElementById('nodeShape').value;
 		let node = cy.$('#' + id);
 		node.data('name', nodeId)
-		.data('content', content);
+		.data('content', content)
+		.data('shape', shape);
 		
 		tippyEl.find(data => {if(data.id === id) return true})
 				.popper._tippy.setContent(content);
@@ -459,7 +496,7 @@ h1 {
 	document.getElementById('addNode-btn').addEventListener('click', e => {
 		var node = cy.add({
 			group: 'nodes',
-			data: {name: document.getElementById('addId').value, content : document.getElementById('addContent').value}
+			data: {name: document.getElementById('addId').value, content : document.getElementById('addContent').value, shape : document.getElementById('addShape').value}
 		});
 		
 		cy.add({
@@ -494,7 +531,7 @@ h1 {
 		}
 		let node = cy.add({
 			group: 'nodes',
-			data: {name: document.getElementById('addName1').value, content : document.getElementById('addContent1').value}
+			data: {name: document.getElementById('addName1').value, content : document.getElementById('addContent1').value, shape : document.getElementById('addShape1').value}
 		});
 		cyLayout();
 		makeTippy(node, node.data().content);

@@ -5,6 +5,9 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.*;
 
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +25,9 @@ import com.spring.course.model.CourseEntity;
 import com.spring.course.repository.CourseRepository;
 import com.spring.course.repository.CourseRepositorySupport;
 
+@ExtendWith(SpringExtension.class)
 @SpringBootTest
 @Transactional
-@ExtendWith(SpringExtension.class)
-//@DataJpaTest
-@AutoConfigureTestDatabase(replace = Replace.NONE)
 public class CourseDataJpaTest {
 
 	@Autowired
@@ -62,6 +63,7 @@ public class CourseDataJpaTest {
 	}
 
 	@Test
+	@DisplayName("Course 등록 후 조회")
 	public void addCourse() throws JsonProcessingException {
 		CourseDto dto = CourseDto.builder()
 						.title("테스트제목")
@@ -79,6 +81,7 @@ public class CourseDataJpaTest {
 	}
 	
 	@Test
+	@DisplayName("Course 삭제")
 	public void deleteCourse() throws JsonProcessingException {
 		Long beforeCount = courseRepository.count();
 		

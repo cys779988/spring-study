@@ -24,7 +24,7 @@
 						</div>
 					<div class="mt-3">
 						<button class="btn btn-primary mb-3" id="list-btn">목록</button>
-						<c:if test="${boardDto.registrant eq sessionScope.user.email}">
+						<c:if test="${owner}">
 							<button class="btn btn-primary mb-3" id="modify-btn">수정</button>
 							<button class="btn btn-primary mb-3" id="delete-btn">삭제</button>
 						</c:if>

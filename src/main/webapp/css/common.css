@@ -203,35 +203,6 @@ p.line-height_2{line-height: 2!important;}
 .fc_red{color: #FE553F;font-style: normal;}
 .fc_999{color: #999;}
 
-/* btn + btn_color */
-.btn{display:inline-block;letter-spacing:-1px;vertical-align: middle;width: auto;text-align: center;margin-right:5px;font-size: 0.813rem!important;cursor: pointer;font-family:'Malgun Gothic';}
-.btn:last-of-type{margin-right:0px;}
-.btn img{line-height: 30px;} 
-.btn_logout{background-image: url(/resources/images/header/logout.png);background-repeat: no-repeat;background-position: 85% 50%;padding:0px 10px;padding-right:30px;line-height: 25px;background-color: #009685;border: 1px solid #009685;border-radius: 3px;margin-top: 10px;}
-.btn_blue{min-width:60px;padding:0px 15px;;line-height: 28px; background-color: #164da3;color:#fff;border: 1px solid #164da3;}
-.btn_mint{min-width:60px;padding:0px 15px;;line-height: 28px; background-color: #00ad99;color:#fff;border: 1px solid #00957f;}
-.btn_gray_line{min-width:60px;padding:0px 15px;;line-height: 28px; background-color: #fff;color: #434343; border: 1px solid #434343;}
-.btn_gray_line.right_arrow{padding-right:24px!important;background: url(/resources/images/icon/paging_last.png) 78% 44% no-repeat;background-color: #fff;;}
-.btn_gray_line.left_arrow{padding-left:24px!important; background: url(/resources/images/icon/paging_first.png) 12% 44% no-repeat;background-color: #fff;}
-.btn_gray_line_small{min-width:60px;padding:0px 10px;;line-height: 28px; background-color: #fff;color: #434343; border: 1px solid #434343;}
-.btn_blue_line{padding:0px 15px;;line-height: 28px; background-color: #fff;color: #1b87e9; border: 1px solid #1b87e9;}
-.btn_blue_line_small{padding:0px 10px;;line-height: 20px; background-color: #fff;color: #1b87e9; border: 1px solid #1b87e9;}
-.btn_popup_close{color: #30323c;font-size: 0.875rem;padding-left:23px;font-weight: bold;background: url(/resources/images/icon/pop_close.png) 0 50% no-repeat;}
-.btn_search_icon{margin-left: -4px;;width: 30px; height: 30px; border: 1px solid #d2d2d2;background: url(/resources/images/icon/search_gray.png) 50% 50% no-repeat;}
-.btn_reset_icon{width: 30px; height: 30px;background:url(/resources/images/icon/btn_reload.png);margin-right:0px;}
-.btn_calc{padding:0px 26px 0px 10px;line-height: 28px; background:url(/resources/images/icon/btn_image_calculate.png) calc(100% - 10px) 50% no-repeat;;background-color: #fff;color: #1b87e9; border: 1px solid #1b87e9;}
-.btn_add{padding:0px 26px 0px 10px;line-height: 28px; background:url(/resources/images/icon/btn_image_add.png) calc(100% - 10px) 50% no-repeat;;background-color: #fff;color: #1b87e9; border: 1px solid #1b87e9;}
-.btn_remove{padding:0px 26px 0px 10px;line-height: 28px; background:url(/resources/images/icon/btn_image_remove.png) calc(100% - 10px) 50% no-repeat;;background-color: #fff;color: #434343; border: 1px solid #434343;}
-.btn_remove_icon{overflow:hidden;width: 15px; height: 15px;background:url(/resources/images/icon/btn_remove.png) 50% 50% no-repeat;margin-left:5px;font-size:0!important;}
-.btn_open{width: 24px; height: 24px; background:url(/resources/images/icon/btn_open.png) 50% 50% no-repeat;line-height: 5; overflow: hidden;}
-.btn_open.active{background-image:url(/resources/images/icon/btn_close.png);}
-.btn_close{width: 24px; height: 24px; background:url(/resources/images/icon/btn_close.png) 50% 50% no-repeat;line-height: 5; overflow: hidden;}
-.btn_close.active{background-image:url(/resources/images/icon/btn_open.png);}
-.btn_more{position:absolute;right:-1px;bottom:-29px;display: inline-block;width: auto; line-height: 28px;font-size: 0.75rem;padding: 0 8px;border: 1px solid #e4e7ec;border-top-color: #fff;background-color: #fff;cursor: pointer;;}
-.btn_more img{margin:0 4px;vertical-align: middle;}
-.btn_file{overflow:hidden; display:inline-block;width:20px; height:20px;background:url(/resources/images/icon/btn_image_file.png) 50% 50% no-repeat;overflow:hidden; line-height:0; font-size:0; text-indent:-1000px;}
-
-
 table .btn_gray_line_small{margin-left:5px!important;min-width:50px;padding:0px 6px!important;line-height: 22px;font-size: 0.75rem!important; background-color: #fff;color: #434343; border: 1px solid #434343;}
 /* cursor */
 .pointer{cursor:pointer!important;}

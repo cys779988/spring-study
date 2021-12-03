@@ -19,9 +19,7 @@ public class StompHandler implements ChannelInterceptor{
 	
 	@Override
 	public Message<?> preSend(Message<?> message, MessageChannel channel) {
-		// TODO Auto-generated method stub
 		StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-		// websocket 연결시 Header의 jwt token 검증
 		if(StompCommand.CONNECT == accessor.getCommand()) {
 			jwtTokenProvider.validateToken(accessor.getFirstNativeHeader("token"));
 		}

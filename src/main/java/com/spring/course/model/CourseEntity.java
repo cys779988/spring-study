@@ -38,7 +38,7 @@ public class CourseEntity extends BaseTimeEntity {
 	@Column(columnDefinition = "TEXT", nullable = false)
 	private String content;
 
-	@OneToOne
+	@ManyToOne
 	@JoinColumn(name = "category_id", foreignKey = @ForeignKey(name = "fk_course_category"))
 	private CategoryEntity category;
 

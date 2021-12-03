@@ -62,12 +62,12 @@ h1 {
 					<div class="mt-3">
 						<button class="btn btn-primary mb-3" id="list-btn">목록</button>
 						<c:choose>
-							<c:when test="${courseDto.registrant eq sessionScope.user.email}">
-								<button class="btn btn-primary mb-3" id="modify-btn">수정</button>
-								<button class="btn btn-primary mb-3" id="delete-btn">삭제</button>
+							<c:when test="${owner}">
+								<button class="btn btn-primary mb-3" onclick="modifyData()">수정</button>
+								<button class="btn btn-primary mb-3" onclick="deleteData()">삭제</button>
 							</c:when>
 							<c:otherwise>
-								<button class="btn btn-primary mb-3" id="apply-btn">신청</button>
+								<button class="btn btn-primary mb-3" onclick="apply()">신청</button>
 							</c:otherwise>
 						</c:choose>
 					</div>
@@ -151,6 +151,7 @@ h1 {
 		        	        'text-outline-width': 1,
 		        	        'text-outline-color': '#888',
 		        	        'background-color': '#888',
+		        	        'shape' : 'data(shape)',
 		                    'width': function (ele) {
 		                        return nodeMaxSize / pageRank.rank('#' + ele.id()) + nodeMinSize;
 		                    },
@@ -259,13 +260,23 @@ h1 {
 	    },200);
 	});
 	
-	document.getElementById('modify-btn').addEventListener('click', e => {
-		e.preventDefault();
+	function apply() {
+		$.ajax({
+			url: "<c:url value='/api/group/apply/${courseDto.id}'/>",
+			type: 'post',
+			success : function(result) {
+				location.href = "<c:url value='/course/'/>"
+			},
+			error : function(error) {
+				alert(error.responseJSON.message);
+			}
+		})
+	}
+	function modifyData() {
 		location.href = "<c:url value='/course/edit/${courseDto.id}'/>"
-	})
+	}
 	
-	document.getElementById('delete-btn').addEventListener('click', e => {
-		e.preventDefault();
+	function deleteData() {
 		$.ajax({
 			url: "<c:url value='/api/course/${courseDto.id}'/>",
 			type: 'delete',
@@ -273,7 +284,7 @@ h1 {
 				location.href = "<c:url value='/course/'/>"
 			}
 		})
-	})
+	}
 	
 	var makeTippy = function(ele, text){
 		var ref = ele.popperRef();

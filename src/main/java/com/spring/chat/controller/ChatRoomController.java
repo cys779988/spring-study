@@ -18,6 +18,7 @@ import com.spring.chat.model.ChatRoom;
 import com.spring.chat.model.LoginInfo;
 import com.spring.chat.repository.ChatRoomRepository;
 import com.spring.chat.service.JwtTokenProvider;
+import com.spring.common.util.AppUtil;
 
 import lombok.RequiredArgsConstructor;
 
@@ -61,9 +62,7 @@ public class ChatRoomController {
 	@GetMapping("/user")
 	@ResponseBody
 	public LoginInfo getUserInfo() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		DefaultOAuth2User userDetails = (DefaultOAuth2User)auth.getPrincipal();
-		String name =  userDetails.getAttribute("name");
+		String name =  AppUtil.getUser();
 		return LoginInfo.builder().name(name).token(jwtTokenProvider.generateToken(name)).build();
 	}
 }

@@ -3,7 +3,7 @@ package com.spring.common.util;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
 
-import com.spring.security.model.UserContext;
+import com.spring.security.model.UserEntity;
 
 
 public class AppUtil{
@@ -12,8 +12,8 @@ public class AppUtil{
 			DefaultOAuth2User userInfo = (DefaultOAuth2User)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			return userInfo.getAttribute("email");
 		} else {
-			UserContext userInfo = (UserContext)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			return userInfo.getUsername();
+			UserEntity userInfo = (UserEntity)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			return userInfo.getEmail();
 		}
 	}
 }

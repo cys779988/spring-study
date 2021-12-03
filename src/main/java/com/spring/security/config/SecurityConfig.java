@@ -1,5 +1,7 @@
 package com.spring.security.config;
 
+import java.util.Arrays;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -13,7 +15,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.AuthenticationFailureHandler;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.spring.security.service.CustomOAuth2UserService;
 import com.spring.security.service.UserService;
@@ -28,6 +34,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final AuthenticationSuccessHandler customSuccessHandler;
 	private final AuthenticationFailureHandler customFailureHandler;
+	private final LogoutHandler logoutHandler;
 	
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -41,15 +48,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Override
 	public void configure(WebSecurity web) throws Exception {
-		web.ignoring().antMatchers("/css/**", "/js/**");
+		web.ignoring().antMatchers("/css/**", "/js/**", "/assets/**");
 	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests()
 				// 페이지권한설정
 				.antMatchers("/admin/**").hasRole("ADMIN")
+				.antMatchers("/user/**").permitAll()
 				.anyRequest().authenticated()
 			.and()
 				.formLogin()
@@ -65,6 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.logout()
 				.logoutRequestMatcher(new AntPathRequestMatcher("/user/logout"))
 				.logoutSuccessUrl("/user/login")
+				.addLogoutHandler(logoutHandler)
 				.invalidateHttpSession(true)
 			.and()
 				.oauth2Login()
@@ -81,6 +89,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
 		auth.authenticationProvider(authenticationProvider());
 		//auth.userDetailsService(userService).passwordEncoder(passwordEncoder());
+	}
+	
+	@Bean
+	CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration configuration = new CorsConfiguration();
+		configuration.setAllowedOrigins(Arrays.asList("*"));
+		configuration.setAllowedMethods(Arrays.asList("HEAD", "GET", "POST", "PUT"));
+		configuration.setAllowedHeaders(Arrays.asList("Authorization", "Cache-Control", "Content-Type"));
+		configuration.setAllowCredentials(true);
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", configuration);
+		return source;
 	}
 	
 	private AccessDeniedHandler accessDeniedHandler() {

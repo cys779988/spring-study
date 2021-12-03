@@ -21,6 +21,8 @@ import com.spring.course.model.CourseEntity;
 import com.spring.course.repository.CategoryRepository;
 import com.spring.course.repository.CourseRepository;
 import com.spring.course.repository.CourseRepositorySupport;
+import com.spring.group.repository.GroupRepository;
+import com.spring.security.model.UserEntity;
 import com.spring.security.repository.UserRepository;
 
 import javax.transaction.Transactional;
@@ -29,11 +31,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 @AllArgsConstructor
 @Service
 public class CourseService {
-	private UserRepository userRepository;
     private CourseRepository courseRepository;
     private CategoryRepository categoryRepository;
     private ObjectMapper objectMapper;
@@ -66,6 +69,12 @@ public class CourseService {
 		return categoryRepository.findAll();
 	}
 
+	public List<CourseDto> getCourseByUser() {
+		List<CourseEntity> courseEntityList = courseRepository.findByRegistrant_email(AppUtil.getUser());
+		
+		return courseEntityList.stream().map(courseEntity -> convertEntityToDto(courseEntity)).collect(Collectors.toList());
+	}
+	
     @Transactional
     public CourseDto getCourse(Long id) {
     	Optional<CourseEntity> entityWrapper = courseRepository.findById(id);
@@ -83,7 +92,7 @@ public class CourseService {
     	CourseEntity entity;
 		try {
 			entity = courseDto.toEntity();
-			entity.setRegistrant(userRepository.findById(AppUtil.getUser()).get());
+	    	entity.setRegistrant(UserEntity.builder().email(AppUtil.getUser()).build());
 			courseRepository.save(entity);
 		} catch (JsonProcessingException e) {
 			e.printStackTrace();
@@ -95,7 +104,7 @@ public class CourseService {
     	CourseEntity entity;
     	try {
     		entity = courseDto.toEntity();
-    		entity.setRegistrant(userRepository.findById(AppUtil.getUser()).get());
+	    	entity.setRegistrant(UserEntity.builder().email(AppUtil.getUser()).build());
     		courseRepositorySupport.updateCourse(entity);
     	} catch (JsonProcessingException e) {
     		e.printStackTrace();
@@ -138,4 +147,5 @@ public class CourseService {
 		}
 		return readValue;
     }
+
 }
